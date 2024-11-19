@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../components/practice1/Input";
 import styled from "styled-components";
 import { motion } from "motion/react";
@@ -19,10 +19,35 @@ const Practice1 = () => {
   const [skewY, setSkewY] = useState(0);
   const [transformPerspective, setTransformPerspective] = useState(0);
 
+  const [bgColor, setBgcolor] = useState(null);
+
+  useEffect(() => {
+    setBgcolor(`#${x.toString(16).padStart(6, "0")}`);
+  }, [x]);
+
   return (
     <>
       <Container>
-        <MotionBox animate={{ x, y, z, scale, scaleX, scaleY, rotate, rotateX, rotateY, rotateZ, skew, skewX, skewY, transformPerspective}} transition={{ type: "spring" }} />
+        <MotionBox
+          bgColor={bgColor}
+          animate={{
+            x,
+            y,
+            z,
+            scale,
+            scaleX,
+            scaleY,
+            rotate,
+            rotateX,
+            rotateY,
+            rotateZ,
+            skew,
+            skewX,
+            skewY,
+            transformPerspective,
+          }}
+          transition={{ type: "spring" }}
+        />
         <div>
           <Input type={"range"} label={"x"} value={x} onChange={setX} min={-200} max={200} />
           <Input type={"range"} label={"y"} value={y} onChange={setY} min={-200} max={200} />
@@ -58,12 +83,12 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   justify-content: space-evenly;
-  align-items:center;
+  align-items: center;
 `;
 
 const MotionBox = styled(motion.div)`
   width: 200px;
   height: 200px;
   border-radius: 15px;
-  background-color: blue;
+  background-color: ${(props) => props.bgColor || "blue"};
 `;
